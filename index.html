@@ -1,0 +1,195 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Blog Site</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Blog</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <article>
+                <h2>My First Story</h2>
+                <p>This is my first story! Hope you enjoy reading.</p>
+
+                <!-- Likes Section -->
+                <button id="like-button">Like</button>
+                <p id="like-count">0 Likes</p>
+
+                <!-- Comments Section -->
+                <div id="comments">
+                    <h3>Comments</h3>
+                    <div id="disqus_thread"></div>
+                    <script>
+                        var disqus_config = function () {
+                            this.page.url = window.location.href;
+                            this.page.identifier = document.title;
+                        };
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://your-shortname.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My Blog. All rights reserved.</p>
+    </footer>
+
+    <!-- Firebase Configuration and Like Handling -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDR0HOhoVfKxzZC8uqlt1uNmFkowI221jA",
+            authDomain: "read-articles-daily.firebaseapp.com",
+            databaseURL: "https://console.firebase.google.com/u/0/project/read-articles-daily/database/read-articles-daily-default-rtdb/data/~2F?fb_gclid=CjwKCAiAxqC6BhBcEiwAlXp455UhVORBMfIpVWU6RAuuw6JAsAeH6uvyIA2wVgQT0XDi8Oob61o6aRoCJZ0QAvD_BwE",
+            projectId: "read-articles-daily",
+            storageBucket: "read-articles-daily.firebasestorage.app",
+            messagingSenderId: "199215513133",
+            appId: "1:199215513133:web:618908783932c385b502a4"
+            measurementId: "G-G30LL91FZL"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const likeButton = document.getElementById('like-button');
+        const likeCount = document.getElementById('like-count');
+        const likeRef = db.ref('likes');
+
+        likeRef.on('value', (snapshot) => {
+            likeCount.textContent = snapshot.val() || 0;
+        });
+
+        likeButton.addEventListener('click', () => {
+            likeRef.transaction((currentLikes) => (currentLikes || 0) + 1);
+        });
+    </script>
+ <style>
+    /* General Reset */
+body, h1, h2, h3, p, ul, li, a, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+}
+
+header {
+    background: #4CAF50;
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+nav ul li {
+    margin: 0 1rem;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #d4ffd4;
+}
+
+main {
+    padding: 2rem;
+}
+
+article {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+article h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #4CAF50;
+}
+
+article p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+#like-count {
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+#comments {
+    margin-top: 2rem;
+}
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+footer p {
+    font-size: 0.9rem;
+}
+
+ </style>
+</body>
+</html>
